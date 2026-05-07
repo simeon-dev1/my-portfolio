@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Simeon Ogho | Full Stack Web Developer — Systems Thinker & Builder</title>
     <meta name="description" content="Simeon Ogho — Full Stack Web Developer. I build fast, reliable web apps & systems. Remote worldwide.">
-    <title>Simeon Ogho | Full Stack Developer — Mobile-first portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -29,7 +29,7 @@
             padding: 0 1.5rem;
         }
 
-        /* ===== responsive navbar (mobile-first) ===== */
+        /* navbar */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -39,6 +39,7 @@
             gap: 1rem;
             border-bottom: 1px solid rgba(0,0,0,0.05);
             position: relative;
+            z-index: 1001;
         }
 
         .logo {
@@ -51,7 +52,7 @@
             letter-spacing: -0.02em;
         }
 
-        /* hamburger menu for mobile */
+        /* hamburger button */
         .menu-toggle {
             display: none;
             background: none;
@@ -60,13 +61,38 @@
             color: #1e293b;
             cursor: pointer;
             padding: 0.5rem;
+            transition: transform 0.2s;
+            z-index: 1002;
+        }
+
+        .menu-toggle i {
+            transition: all 0.2s ease;
+        }
+
+        /* overlay for closing sidebar when tapping outside */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(2px);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .nav-links {
             display: flex;
             gap: 1.8rem;
             list-style: none;
-            transition: all 0.3s ease;
         }
 
         .nav-links a {
@@ -89,17 +115,17 @@
             }
             .nav-links {
                 position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 80%;
-                height: calc(100% - 70px);
+                top: 0;
+                left: -75%;
+                width: 75%;
+                height: 100%;
                 background: white;
                 flex-direction: column;
-                padding: 2rem 1.5rem;
+                padding: 5rem 2rem 2rem 2rem;
                 gap: 1.8rem;
-                box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+                box-shadow: 4px 0 30px rgba(0,0,0,0.15);
                 transition: left 0.3s ease-in-out;
-                z-index: 1000;
+                z-index: 999;
                 border-radius: 0 20px 20px 0;
             }
             .nav-links.active {
@@ -161,7 +187,6 @@
             display: inline-block;
         }
 
-        /* hero section */
         .hero {
             display: flex;
             flex-direction: column;
@@ -269,7 +294,6 @@
             }
         }
 
-        /* skills chips */
         .skills-grid {
             display: flex;
             flex-wrap: wrap;
@@ -291,7 +315,6 @@
             font-weight: 500;
         }
 
-        /* strength cards grid */
         .strength-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -312,7 +335,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* project card */
         .feature-card {
             background: white;
             border-radius: 28px;
@@ -396,7 +418,6 @@
             }
         }
 
-        /* contact banner */
         .contact-banner {
             background: linear-gradient(115deg, #0f172a 0%, #1e293b 100%);
             border-radius: 32px;
@@ -416,22 +437,22 @@
             color: #475569;
         }
 
-        /* touch-friendly */
         button, a, .btn, .skill-tag {
             touch-action: manipulation;
         }
-
-        /* fix overflow */
         img, iframe, .container, .feature-card, .strength-card {
             max-width: 100%;
         }
     </style>
 </head>
 <body>
+
 <div class="container">
     <nav class="navbar">
         <div class="logo">Simeon Ogho · Dev</div>
-        <button class="menu-toggle" id="menuToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
         <ul class="nav-links" id="navLinks">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
@@ -441,9 +462,17 @@
         </ul>
         <a href="#contact" class="btn" style="padding: 0.5rem 1.2rem;">Let's talk</a>
     </nav>
+</div>
 
+<!-- overlay for closing sidebar -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<div class="container">
     <section id="home">
         <div class="hero">
+            <div class="hero-image">
+                <img src="https://i.imgur.com/JV8wYCd.jpeg" alt="Simeon Ogho - Full Stack Developer">
+            </div>
             <div class="hero-content">
                 <span class="hero-badge"><i class="fas fa-globe"></i> Remote · Worldwide</span>
                 <h1>Full Stack Dev<br><span class="hero-highlight">that builds systems, fast.</span></h1>
@@ -457,27 +486,24 @@
                     <a href="mailto:simeonogho86@gmail.com" class="btn btn-outline">Hire me</a>
                 </div>
             </div>
-            <div class="hero-image">
-                <img src="https://i.imgur.com/JV8wYCd.jpeg" alt="Simeon Ogho">
-            </div>
         </div>
     </section>
 
     <section id="about">
         <h2 class="section-title">⚡ Architect & builder</h2>
         <p style="font-size: 1rem; margin-bottom: 1.5rem;"><strong>I think in systems.</strong> Self‑taught full‑stack dev with intensive hands‑on experience, including solo development of <strong>Acadryx</strong> — a complete multi‑country, multi‑tenant school management OS. I build fast, reliable web apps using React, Supabase, PostgreSQL.</p>
-        <div style="display: flex; flex-wrap: wrap; gap: 1rem; background: white; border-radius: 28px; padding: 1.2rem;">
+        <!--<div style="display: flex; flex-direction: column; flex-wrap: wrap; gap: 1rem; background: white; border-radius: 28px; padding: 1.2rem;">
             <div style="flex:1;"><i class="fas fa-rocket"></i> <strong>Speed</strong><br>Acadryx in ~2 months</div>
             <div style="flex:1;"><i class="fas fa-brain"></i> <strong>Systems thinker</strong><br>Hold complex architectures</div>
             <div style="flex:1;"><i class="fas fa-chart-line"></i> <strong>Lead generation</strong><br>Build systems that drive leads</div>
-        </div>
+        </div>-->
     </section>
 
     <section id="skills">
         <h2 class="section-title">🛠️ Tech & strengths</h2>
         <div class="skills-grid">
             <span class="skill-tag">React</span><span class="skill-tag">Supabase</span><span class="skill-tag">PostgreSQL</span>
-            <span class="skill-tag">JavaScript</span><span class="skill-tag">PL/pgSQL</span><span class="skill-tag">Vercel</span>
+            <span class="skill-tag">JavaScript</span><span class="skill-tag">PL/pgSQL</span><span class="skill-tag">Vercel Deployment</span>
             <span class="skill-tag">Edge Functions</span><span class="skill-tag">RBAC</span>
         </div>
         <div class="strength-cards">
@@ -544,32 +570,61 @@
 </div>
 
 <script>
-    // mobile hamburger menu toggle
-    const toggleBtn = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
-    if (toggleBtn && navLinks) {
-        toggleBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-        // close menu when a link is clicked
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-    }
-    // smooth scroll for all anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === "#" || targetId === "") return;
-            const targetEl = document.querySelector(targetId);
-            if (targetEl) {
-                e.preventDefault();
-                targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    (function() {
+        const toggleBtn = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        const overlay = document.getElementById('menuOverlay');
+        const icon = toggleBtn.querySelector('i');
+
+        function openMenu() {
+            navLinks.classList.add('active');
+            overlay.classList.add('active');
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        }
+
+        function closeMenu() {
+            navLinks.classList.remove('active');
+            overlay.classList.remove('active');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (navLinks.classList.contains('active')) {
+                closeMenu();
+            } else {
+                openMenu();
             }
         });
-    });
+
+        // Close when clicking overlay
+        overlay.addEventListener('click', closeMenu);
+
+        // Close when clicking a nav link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMenu();
+            });
+        });
+
+        // Prevent closing when clicking inside navLinks (propagation already handled)
+        navLinks.addEventListener('click', (e) => e.stopPropagation());
+
+        // Smooth scroll for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === "#" || targetId === "") return;
+                const targetEl = document.querySelector(targetId);
+                if (targetEl) {
+                    e.preventDefault();
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    })();
 </script>
 </body>
 </html>
