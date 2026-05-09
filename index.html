@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
@@ -8,624 +8,467 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-xl: 36px;
+            --nav-height: 72px;
+
+            /* Light theme */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --border: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent: #2563eb;
+            --accent-light: #3b82f6;
+            --accent-glow: rgba(37,99,235,0.2);
+            --green: #16a34a;
+            --amber: #f59e0b;
+            --overlay-bg: rgba(0,0,0,0.25);
         }
+
+        [data-theme="dark"] {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #131320;
+            --bg-card: rgba(255,255,255,0.03);
+            --bg-card-hover: rgba(255,255,255,0.06);
+            --border: rgba(255,255,255,0.08);
+            --text-primary: #edf0f7;
+            --text-secondary: #9499b8;
+            --text-muted: #6b7094;
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --accent-glow: rgba(99,102,241,0.2);
+            --green: #22c55e;
+            --amber: #f59e0b;
+            --overlay-bg: rgba(0,0,0,0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            color: #0f172a;
-            line-height: 1.5;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background var(--transition), color var(--transition);
+            padding-top: calc(var(--nav-height) + 1rem);
         }
 
-        .container {
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        /* navbar */
+        /* ── Navbar ── */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            padding: 1.2rem 0;
-            gap: 1rem;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            position: relative;
-            z-index: 1001;
+            gap: 1.5rem;
+            padding: 1.2rem 2rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--nav-height);
+            z-index: 100;
+            transition: background var(--transition);
         }
+        .navbar .container { display: contents; }
 
         .logo {
             font-weight: 800;
-            font-size: 1.5rem;
-            background: linear-gradient(135deg, #1E3A8A, #3B82F6);
-            background-clip: text;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        /* hamburger button */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            color: #1e293b;
-            cursor: pointer;
-            padding: 0.5rem;
-            transition: transform 0.2s;
-            z-index: 1002;
-        }
-
-        .menu-toggle i {
-            transition: all 0.2s ease;
-        }
-
-        /* overlay for closing sidebar when tapping outside */
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(2px);
-            z-index: 998;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s;
-        }
-
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1.8rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            font-weight: 500;
-            color: #1f2937;
-            transition: color 0.2s;
-            font-size: 0.95rem;
             white-space: nowrap;
         }
 
-        .nav-links a:hover {
-            color: #2563eb;
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .desktop-nav a {
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-xl);
+            transition: var(--transition);
+        }
+        .desktop-nav a:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
         }
 
-        /* mobile styles */
-        @media (max-width: 700px) {
-            .menu-toggle {
-                display: block;
-            }
-            .nav-links {
-                position: fixed;
-                top: 0;
-                left: -75%;
-                width: 75%;
-                height: 100%;
-                background: white;
-                flex-direction: column;
-                padding: 5rem 2rem 2rem 2rem;
-                gap: 1.8rem;
-                box-shadow: 4px 0 30px rgba(0,0,0,0.15);
-                transition: left 0.3s ease-in-out;
-                z-index: 999;
-                border-radius: 0 20px 20px 0;
-            }
-            .nav-links.active {
-                left: 0;
-            }
-            .nav-links a {
-                font-size: 1.2rem;
-                white-space: normal;
-            }
-            .container {
-                padding: 0 1.2rem;
-            }
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
         }
 
-        /* buttons */
+        .theme-toggle {
+            background: none;
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.4rem 0.6rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        .theme-toggle:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            background: #2563eb;
+            gap: 6px;
+            background: var(--accent);
             color: white;
             font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 60px;
+            padding: 0.55rem 1.4rem;
+            border-radius: var(--radius-xl);
             text-decoration: none;
-            transition: all 0.2s ease;
-            font-size: 0.9rem;
+            transition: var(--transition);
+            font-size: 0.88rem;
             border: none;
             cursor: pointer;
-            text-align: center;
+            white-space: nowrap;
         }
-
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
         .btn-outline {
             background: transparent;
-            border: 1.5px solid #2563eb;
-            color: #2563eb;
+            border: 1.5px solid var(--border);
+            color: var(--text-primary);
         }
-
         .btn-outline:hover {
-            background: #2563eb;
-            color: white;
+            background: var(--bg-card-hover);
+            border-color: var(--accent-light);
+            box-shadow: 0 0 20px var(--accent-glow);
         }
 
-        section {
-            padding: 3rem 0;
-            border-bottom: 1px solid #e2e8f0;
+        /* ── Mobile menu toggle ── */
+        .menu-toggle {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 0.5rem 0.7rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            z-index: 101;
         }
+        .menu-toggle:hover { background: var(--bg-card-hover); }
 
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1.8rem;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #0f172a, #2563eb);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            display: inline-block;
-        }
-
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 2rem;
-        }
-
-        @media (min-width: 800px) {
-            .hero {
-                flex-direction: row;
-                text-align: left;
-                justify-content: space-between;
-            }
-            .hero-content {
-                flex: 1;
-            }
-        }
-
-        .hero-badge {
-            background: #e0e7ff;
-            color: #1e40af;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-
-        .hero-content h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-
-        @media (min-width: 640px) {
-            .hero-content h1 {
-                font-size: 2.8rem;
-            }
-        }
-        @media (min-width: 1024px) {
-            .hero-content h1 {
-                font-size: 3.2rem;
-            }
-        }
-
-        .hero-highlight {
-            color: #2563eb;
-        }
-
-        .hero-desc {
-            font-size: 1rem;
-            color: #334155;
-            margin: 1rem 0 1.5rem;
-            max-width: 550px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        @media (min-width: 800px) {
-            .hero-desc {
-                margin-left: 0;
-            }
-        }
-
-        .hero-contact {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        @media (min-width: 800px) {
-            .hero-contact {
-                justify-content: flex-start;
-            }
-        }
-
-        .contact-icon {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            color: #334155;
-            background: white;
-            padding: 0.4rem 0.9rem;
-            border-radius: 40px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .hero-image img {
-            width: 160px;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 50%;
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
-            border: 3px solid white;
-        }
-        @media (min-width: 640px) {
-            .hero-image img {
-                width: 200px;
-                height: 200px;
-            }
-        }
-
-        .skills-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-bottom: 2rem;
-            justify-content: center;
-        }
-        @media (min-width: 640px) {
-            .skills-grid {
-                justify-content: flex-start;
-            }
-        }
-        .skill-tag {
-            background: white;
-            border: 1px solid #e2e8f0;
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .strength-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.2rem;
-            margin-top: 1.8rem;
-        }
-        .strength-card {
-            background: white;
-            padding: 1.2rem;
-            border-radius: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            border: 1px solid #eef2ff;
-            text-align: center;
-        }
-        .strength-card i {
-            font-size: 1.8rem;
-            color: #2563eb;
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-card {
-            background: white;
-            border-radius: 28px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 12px 24px -12px rgba(0,0,0,0.08);
-            border: 1px solid #eef2ff;
-        }
-        .project-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin: 0.8rem 0 0.5rem;
-        }
-        .feature-list {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.8rem;
-            margin: 1.5rem 0;
-            list-style: none;
-        }
-        @media (min-width: 540px) {
-            .feature-list {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .feature-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 0.85rem;
-        }
-        .feature-list i {
-            color: #16a34a;
-            width: 1.2rem;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 1.5rem 0 1rem;
-        }
-
-        .additional-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
-            margin-top: 1.5rem;
-        }
-        @media (min-width: 640px) {
-            .additional-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (min-width: 1024px) {
-            .additional-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        .simple-card {
-            background: white;
-            border-radius: 24px;
-            padding: 1.5rem;
-            border: 1px solid #edf2f7;
-        }
-        .info-grid {
-            display: flex;
+        /* ── Mobile sidebar ── */
+        .mobile-menu {
+            position: fixed;
+            top: 0; left: -85%;
+            width: 85%;
+            max-width: 320px;
+            height: 100%;
+            background: var(--bg-secondary);
+            padding: 5rem 2rem 2rem;
             flex-direction: column;
             gap: 1.5rem;
-            background: #f1f5f9;
-            border-radius: 28px;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
+            z-index: 200;
+            transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 40px rgba(0,0,0,0.2);
+            display: flex;
+            list-style: none;
         }
-        @media (min-width: 768px) {
-            .info-grid {
-                flex-direction: row;
-            }
-            .info-block {
-                flex: 1;
-            }
+        .mobile-menu.active { left: 0; }
+        .mobile-menu a {
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            padding: 0.7rem 1rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+        .mobile-menu a:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--overlay-bg);
+            z-index: 150;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        .menu-overlay.active { opacity: 1; visibility: visible; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .desktop-nav, .navbar .btn { display: none; }
+            .menu-toggle { display: block; }
+            .navbar { padding: 0 1.2rem; }
+            body { padding-top: calc(var(--nav-height) + 0.5rem); }
+        }
+
+        /* ── Sections & Cards ── */
+        section { padding: 4rem 0; max-width: 1200px; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+        .section-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent-light); margin-bottom: 0.8rem; display: block; }
+        .section-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.8rem; }
+        @media (min-width: 768px) { .section-title { font-size: 2.8rem; } }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.8rem;
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+        .card:hover { background: var(--bg-card-hover); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+
+        .grid2 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 640px) { .grid2 { grid-template-columns: repeat(2, 1fr); } }
+        .grid3 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 640px) { .grid3 { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .grid3 { grid-template-columns: repeat(3, 1fr); } }
+
+        .hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2rem; }
+        @media (min-width: 800px) { .hero { flex-direction: row; text-align: left; } .hero-content { flex: 1; } }
+
+        .hero-badge {
+            background: rgba(37,99,235,0.08);
+            border: 1px solid rgba(37,99,235,0.2);
+            color: var(--accent-light);
+            padding: 0.4rem 1.2rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 1.2rem;
+        }
+        .hero-content h1 { font-size: 2.6rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+        @media (min-width: 640px) { .hero-content h1 { font-size: 3.2rem; } }
+        .hero-highlight { color: var(--accent-light); }
+        .hero-desc { color: var(--text-secondary); max-width: 520px; margin-bottom: 1.5rem; }
+        .hero-image img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 4px var(--bg-primary), 0 0 0 6px rgba(37,99,235,0.2); }
+        @media (min-width: 640px) { .hero-image img { width: 220px; height: 220px; } }
+
+        .skill-tag {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.4rem 1.2rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
         }
 
         .contact-banner {
-            background: linear-gradient(115deg, #0f172a 0%, #1e293b 100%);
-            border-radius: 32px;
-            padding: 2rem 1.5rem;
+            background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
+            border: 1px solid rgba(37,99,235,0.2);
+            border-radius: var(--radius-xl);
+            padding: 3rem 2rem;
             text-align: center;
+            color: var(--text-primary);
+        }
+        [data-theme="dark"] .contact-banner {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #1a1040 100%);
+            border-color: rgba(99,102,241,0.2);
             color: white;
         }
-        .contact-banner h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.8rem;
-        }
 
-        footer {
-            text-align: center;
-            padding: 2rem 0 2.5rem;
-            font-size: 0.8rem;
-            color: #475569;
-        }
-
-        button, a, .btn, .skill-tag {
-            touch-action: manipulation;
-        }
-        img, iframe, .container, .feature-card, .strength-card {
-            max-width: 100%;
-        }
+        footer { text-align: center; padding: 3rem 1.5rem; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+        footer a { color: var(--accent-light); text-decoration: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <nav class="navbar">
-        <div class="logo">Simeon Ogho · Dev</div>
+<header class="navbar">
+    <div class="logo">Simeon Ogho</div>
+    <nav class="desktop-nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <div class="navbar-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+        <a href="#contact" class="btn btn-outline" style="font-size:0.85rem; padding:0.45rem 1.3rem;">Let's talk</a>
         <button class="menu-toggle" id="menuToggle" aria-label="Menu">
             <i class="fas fa-bars"></i>
         </button>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <a href="#contact" class="btn" style="padding: 0.5rem 1.2rem;">Let's talk</a>
-    </nav>
-</div>
+    </div>
+</header>
 
-<!-- overlay for closing sidebar -->
+<ul class="mobile-menu" id="mobileMenu">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+</ul>
 <div class="menu-overlay" id="menuOverlay"></div>
 
-<div class="container">
+<main>
     <section id="home">
         <div class="hero">
-            <div class="hero-image">
-                <img src="https://i.imgur.com/JV8wYCd.jpeg" alt="Simeon Ogho - Full Stack Developer">
-            </div>
+            <div class="hero-image"><img src="https://i.imgur.com/JV8wYCd.jpeg" alt="Simeon Ogho"></div>
             <div class="hero-content">
                 <span class="hero-badge"><i class="fas fa-globe"></i> Remote · Worldwide</span>
-                <h1>Full Stack Dev<br><span class="hero-highlight">that builds systems, fast.</span></h1>
-                <p class="hero-desc">I bring ideas to life with code. Self‑taught, obsessive about quality, and I deliver production‑ready platforms in record time.</p>
-                <div class="hero-contact">
-                    <span class="contact-icon"><i class="fas fa-envelope"></i> simeonogho86@gmail.com</span>
-                    <span class="contact-icon"><i class="fas fa-map-marker-alt"></i> Nigeria / Remote</span>
-                    <span class="contact-icon"><i class="fab fa-whatsapp"></i> <a href="https://wa.me/2347062605368" target="_blank" style="color: inherit; text-decoration: none;">+2347062605368</a></span>
-                </div>
-                <div style="margin-top: 1.8rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-                    <a href="#projects" class="btn">View flagship project</a>
-                    <a href="mailto:simeonogho86@gmail.com" class="btn btn-outline">Hire me</a>
+                <h1>Full Stack Developer<br><span class="hero-highlight">who builds systems, fast.</span></h1>
+                <p class="hero-desc">I transform ideas into production‑ready platforms. Self‑taught, systems‑minded, and obsessive about quality. I deliver scalable web apps in record time.</p>
+                <div style="display:flex; flex-wrap:wrap; gap:0.8rem; justify-content:center;">
+                    <a href="#projects" class="btn"><i class="fas fa-rocket"></i> View my work</a>
+                    <a href="mailto:simeonogho86@gmail.com" class="btn btn-outline"><i class="fas fa-handshake"></i> Hire me</a>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="about">
-        <h2 class="section-title">⚡ Architect & builder</h2>
-        <p style="font-size: 1rem; margin-bottom: 1.5rem;"><strong>I think in systems.</strong> Self‑taught full‑stack dev with intensive hands‑on experience, including solo development of <strong>Acadryx</strong> — a complete multi‑country, multi‑tenant school management OS. I build fast, reliable web apps using React, Supabase, PostgreSQL.</p>
-        <!--<div style="display: flex; flex-direction: column; flex-wrap: wrap; gap: 1rem; background: white; border-radius: 28px; padding: 1.2rem;">
-            <div style="flex:1;"><i class="fas fa-rocket"></i> <strong>Speed</strong><br>Acadryx in ~2 months</div>
-            <div style="flex:1;"><i class="fas fa-brain"></i> <strong>Systems thinker</strong><br>Hold complex architectures</div>
-            <div style="flex:1;"><i class="fas fa-chart-line"></i> <strong>Lead generation</strong><br>Build systems that drive leads</div>
-        </div>-->
+        <span class="section-label">About me</span>
+        <h2 class="section-title">Architect & Builder</h2>
+        <p style="font-size:1.05rem; max-width:700px; color:var(--text-secondary);">
+            I think in systems. Self‑taught full‑stack developer with intensive hands‑on experience, including solo development of a complete multi‑tenant school management platform. I build fast, reliable web apps using React, Supabase, and PostgreSQL.
+        </p>
     </section>
 
     <section id="skills">
-        <h2 class="section-title">🛠️ Tech & strengths</h2>
-        <div class="skills-grid">
+        <span class="section-label">What I work with</span>
+        <h2 class="section-title">Tech & Strengths</h2>
+        <div style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:2.5rem;">
             <span class="skill-tag">React</span><span class="skill-tag">Supabase</span><span class="skill-tag">PostgreSQL</span>
             <span class="skill-tag">JavaScript</span><span class="skill-tag">PL/pgSQL</span><span class="skill-tag">Vercel Deployment</span>
-            <span class="skill-tag">Edge Functions</span><span class="skill-tag">RBAC</span>
         </div>
-        <div class="strength-cards">
-            <div class="strength-card"><i class="fas fa-cogs"></i><h3>Systems thinking</h3><p>Multi-tenant, end‑to‑end.</p></div>
-            <div class="strength-card"><i class="fas fa-tachometer-alt"></i><h3>Shipping speed</h3><p>CRM in 1 day, Acadryx in 2 months.</p></div>
-            <div class="strength-card"><i class="fas fa-handshake"></i><h3>Client-centric</h3><p>Clear scope & delivery.</p></div>
+        <div class="grid3">
+            <div class="card"><i class="fas fa-cogs" style="color:var(--accent-light); font-size:2rem; margin-bottom:0.5rem; display:block;"></i><h3>Systems Thinking</h3><p style="color:var(--text-muted);">Multi‑tenant, end‑to‑end platforms.</p></div>
+            <div class="card"><i class="fas fa-tachometer-alt" style="color:var(--accent-light); font-size:2rem; margin-bottom:0.5rem; display:block;"></i><h3>Shipping Speed</h3><p style="color:var(--text-muted);">CRM in 1 day. Full school OS in 2 months.</p></div>
+            <div class="card"><i class="fas fa-handshake" style="color:var(--accent-light); font-size:2rem; margin-bottom:0.5rem; display:block;"></i><h3>Client‑Centric</h3><p style="color:var(--text-muted);">Clear scope, fast delivery, real results.</p></div>
         </div>
     </section>
 
     <section id="projects">
-        <h2 class="section-title">🚀 Featured: Acadryx OS</h2>
-        <div class="feature-card">
-            <span class="skill-tag" style="background:#e0e7ff;">Solo developer · built in ~2 months</span>
-            <div class="project-title">Acadryx — School Management OS</div>
-            <p>Production‑ready, multi‑tenant platform with 4 portals: Admin, Teacher, Student, Parent. Real‑time results, PDF reports, bursary, library, CBT exams, birthday notifications.</p>
-            <ul class="feature-list">
-                <li><i class="fas fa-check-circle"></i> Teacher score + auto calc</li>
-                <li><i class="fas fa-chart-line"></i> Real‑time result publishing</li>
-                <li><i class="fas fa-file-pdf"></i> PDF generation & print</li>
-                <li><i class="fas fa-building"></i> Bursary / Library modules</li>
-                <li><i class="fas fa-laptop-code"></i> CBT exam engine</li>
-                <li><i class="fas fa-bell"></i> Birthday notification system</li>
+        <span class="section-label">Featured project</span>
+        <h2 class="section-title">School Management OS</h2>
+        <div class="card">
+            <div style="display:inline-block;" class="skill-tag">Solo developer · Built in ~2 months</div>
+            <h3 style="font-size:1.8rem; margin:0.8rem 0;">Complete multi‑tenant school platform</h3>
+            <p style="color:var(--text-secondary);">
+                Production‑ready system with four portals (Admin, Teacher, Student, Parent). Features include real‑time results, PDF report cards, finance, library, CBT exams, attendance, timetabling, and automated notifications — all built by one developer.
+            </p>
+            <ul style="list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin:1.5rem 0;">
+                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Teacher score entry with auto‑calculation</li>
+                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Real‑time result publishing & rankings</li>
+                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> PDF generation & browser print</li>
+                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Finance & library modules</li>
+                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Full CBT exam engine</li>
+                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Automated birthday notifications</li>
             </ul>
-            <div class="btn-group">
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
                 <a href="https://acadryx-site.vercel.app" target="_blank" class="btn"><i class="fas fa-globe"></i> Marketing site</a>
-                <a href="https://acadryx.vercel.app?school=simple-school" target="_blank" class="btn btn-outline"><i class="fas fa-school"></i> Live demo → code: ADM8389109</a>
+                <a href="#contact" class="btn btn-outline"><i class="fas fa-lock"></i> Request private demo</a>
             </div>
-            <p style="margin-top: 1rem; font-size: 0.75rem; background: #f1f5f9; padding: 0.4rem 1rem; border-radius: 30px; display: inline-block;"><i class="fas fa-key"></i> Login with <strong>ADM8389109</strong> (school=simple-school)</p>
         </div>
 
-        <h2 class="section-title" style="margin-top: 1rem;">📌 More projects</h2>
-        <div class="additional-grid">
-            <div class="simple-card"><i class="fab fa-whatsapp"></i><h3>WhatsApp Business sites</h3><p>Order receiving + customer tracking via membership cards.</p></div>
-            <div class="simple-card"><i class="fas fa-chart-simple"></i><h3>Sales CRM (1 day)</h3><p>Fully functional lead tracking with notes & follow‑ups.</p></div>
-            <div class="simple-card"><i class="fas fa-chart-pie"></i><h3>Dashboards & tools</h3><p>Internal admin panels, analytics, custom business tools.</p></div>
-        </div>
-    </section>
-
-    <section id="education">
-        <h2 class="section-title">📖 Background</h2>
-        <div class="info-grid">
-            <div class="info-block"><i class="fas fa-laptop-code fa-2x"></i><h3>The Odin Project</h3><p>Full Stack JavaScript graduate. Intensive project‑driven learning.</p></div>
-            <div class="info-block"><i class="fas fa-language fa-2x"></i><h3>Languages & work</h3><p>English fluent. Remote worldwide. Physical meetings if transport costs covered.</p></div>
-            <div class="info-block"><i class="fas fa-chalkboard-user fa-2x"></i><h3>Approach</h3><p>Systems thinker, fast learner, building for real business growth.</p></div>
+        <h2 class="section-title" style="font-size:1.8rem; margin-top:1rem;">More Projects</h2>
+        <div class="grid3">
+            <div class="card"><i class="fab fa-whatsapp" style="color:var(--accent-light); font-size:1.5rem;"></i><h3>WhatsApp Business Sites</h3><p style="color:var(--text-muted);">Order receiving + customer tracking via membership cards.</p></div>
+            <div class="card"><i class="fas fa-chart-simple" style="color:var(--accent-light); font-size:1.5rem;"></i><h3>Sales CRM (1 Day)</h3><p style="color:var(--text-muted);">Fully functional lead tracking with notes & follow‑ups.</p></div>
+            <div class="card"><i class="fas fa-chart-pie" style="color:var(--accent-light); font-size:1.5rem;"></i><h3>Dashboards & Tools</h3><p style="color:var(--text-muted);">Internal admin panels, analytics, custom business tools.</p></div>
         </div>
     </section>
 
     <section id="contact">
         <div class="contact-banner">
-            <h2>Let's build something remarkable</h2>
-            <p>Remote worldwide · quick turnaround · systems that scale</p>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin: 1.5rem 0;">
-                <a href="mailto:simeonogho86@gmail.com?subject=Project%20Inquiry" class="btn" style="background: white; color: #0f172a;"><i class="fas fa-envelope"></i> simeonogho86@gmail.com</a>
-                <a href="https://acadryx-site.vercel.app" target="_blank" class="btn btn-outline" style="border-color: white; color: white;"><i class="fas fa-eye"></i> Live demo</a>
+            <h2 style="font-size:2rem;">Let's build something remarkable</h2>
+            <p style="opacity:0.8; margin-bottom:1.5rem;">Remote worldwide · Quick turnaround · Systems that scale</p>
+            <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                <a href="mailto:simeonogho86@gmail.com?subject=Project%20Inquiry" class="btn" style="background:white; color:#0f172a; font-weight:600;"><i class="fas fa-envelope"></i> simeonogho86@gmail.com</a>
             </div>
-            <p><i class="fas fa-clock"></i> Fast replies · Available for freelance, contract, full‑time</p>
+            <p style="opacity:0.6; font-size:0.85rem; margin-top:1rem;"><i class="fas fa-clock"></i> Fast replies · Available for freelance, contract, full‑time</p>
         </div>
     </section>
 
     <footer>
-        <p>© 2025 Simeon Ogho — Full Stack Developer. Built fully responsive.</p>
-        <p><a href="mailto:simeonogho86@gmail.com" style="color:#2563eb;">simeonogho86@gmail.com</a></p>
+        <p>© 2025 Simeon Ogho — Full Stack Developer. Built with precision.</p>
+        <p style="margin-top:0.3rem;"><a href="mailto:simeonogho86@gmail.com">simeonogho86@gmail.com</a></p>
     </footer>
-</div>
+</main>
 
 <script>
-    (function() {
-        const toggleBtn = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
-        const overlay = document.getElementById('menuOverlay');
-        const icon = toggleBtn.querySelector('i');
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
+    }
+    themeToggle.addEventListener('click', () => {
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        themeIcon.classList.toggle('fa-moon', !isDark);
+        themeIcon.classList.toggle('fa-sun', isDark);
+    });
 
-        function openMenu() {
-            navLinks.classList.add('active');
-            overlay.classList.add('active');
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-times');
-        }
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const overlay = document.getElementById('menuOverlay');
+    const menuIcon = menuToggle.querySelector('i');
 
-        function closeMenu() {
-            navLinks.classList.remove('active');
-            overlay.classList.remove('active');
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        }
+    function openMenu() {
+        mobileMenu.classList.add('active');
+        overlay.classList.add('active');
+        menuIcon.classList.replace('fa-bars', 'fa-times');
+    }
+    function closeMenu() {
+        mobileMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        menuIcon.classList.replace('fa-times', 'fa-bars');
+    }
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mobileMenu.classList.contains('active') ? closeMenu() : openMenu();
+    });
+    overlay.addEventListener('click', closeMenu);
+    mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
 
-        toggleBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (navLinks.classList.contains('active')) {
-                closeMenu();
-            } else {
-                openMenu();
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#' || targetId === '') return;
+            const target = document.querySelector(targetId);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
-
-        // Close when clicking overlay
-        overlay.addEventListener('click', closeMenu);
-
-        // Close when clicking a nav link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                closeMenu();
-            });
-        });
-
-        // Prevent closing when clicking inside navLinks (propagation already handled)
-        navLinks.addEventListener('click', (e) => e.stopPropagation());
-
-        // Smooth scroll for all anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === "#" || targetId === "") return;
-                const targetEl = document.querySelector(targetId);
-                if (targetEl) {
-                    e.preventDefault();
-                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    })();
+    });
 </script>
 </body>
 </html>
