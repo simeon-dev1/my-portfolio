@@ -1,474 +1,201 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>Simeon Ogho | Full Stack Web Developer — Systems Thinker & Builder</title>
-    <meta name="description" content="Simeon Ogho — Full Stack Web Developer. I build fast, reliable web apps & systems. Remote worldwide.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            --radius-sm: 12px;
-            --radius-md: 20px;
-            --radius-lg: 28px;
-            --radius-xl: 36px;
-            --nav-height: 72px;
-
-            /* Light theme */
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-card: #ffffff;
-            --bg-card-hover: #f1f5f9;
-            --border: #e2e8f0;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            --accent: #2563eb;
-            --accent-light: #3b82f6;
-            --accent-glow: rgba(37,99,235,0.2);
-            --green: #16a34a;
-            --amber: #f59e0b;
-            --overlay-bg: rgba(0,0,0,0.25);
-        }
-
-        [data-theme="dark"] {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #131320;
-            --bg-card: rgba(255,255,255,0.03);
-            --bg-card-hover: rgba(255,255,255,0.06);
-            --border: rgba(255,255,255,0.08);
-            --text-primary: #edf0f7;
-            --text-secondary: #9499b8;
-            --text-muted: #6b7094;
-            --accent: #6366f1;
-            --accent-light: #818cf8;
-            --accent-glow: rgba(99,102,241,0.2);
-            --green: #22c55e;
-            --amber: #f59e0b;
-            --overlay-bg: rgba(0,0,0,0.6);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            transition: background var(--transition), color var(--transition);
-            padding-top: calc(var(--nav-height) + 1rem);
-        }
-
-        /* ── Navbar ── */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1.5rem;
-            padding: 1.2rem 2rem;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: var(--nav-height);
-            z-index: 100;
-            transition: background var(--transition);
-        }
-        .navbar .container { display: contents; }
-
-        .logo {
-            font-weight: 800;
-            font-size: 1.3rem;
-            background: linear-gradient(135deg, var(--accent-light), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            white-space: nowrap;
-        }
-
-        .desktop-nav {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .desktop-nav a {
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-xl);
-            transition: var(--transition);
-        }
-        .desktop-nav a:hover {
-            background: var(--bg-card-hover);
-            color: var(--text-primary);
-        }
-
-        .navbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .theme-toggle {
-            background: none;
-            border: 1.5px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0.4rem 0.6rem;
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-        }
-        .theme-toggle:hover {
-            background: var(--bg-card-hover);
-            color: var(--text-primary);
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            background: var(--accent);
-            color: white;
-            font-weight: 600;
-            padding: 0.55rem 1.4rem;
-            border-radius: var(--radius-xl);
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 0.88rem;
-            border: none;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-outline {
-            background: transparent;
-            border: 1.5px solid var(--border);
-            color: var(--text-primary);
-        }
-        .btn-outline:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--accent-light);
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        /* ── Mobile menu toggle ── */
-        .menu-toggle {
-            display: none;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            font-size: 1.4rem;
-            cursor: pointer;
-            padding: 0.5rem 0.7rem;
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
-            z-index: 101;
-        }
-        .menu-toggle:hover { background: var(--bg-card-hover); }
-
-        /* ── Mobile sidebar ── */
-        .mobile-menu {
-            position: fixed;
-            top: 0; left: -85%;
-            width: 85%;
-            max-width: 320px;
-            height: 100%;
-            background: var(--bg-secondary);
-            padding: 5rem 2rem 2rem;
-            flex-direction: column;
-            gap: 1.5rem;
-            z-index: 200;
-            transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 4px 0 40px rgba(0,0,0,0.2);
-            display: flex;
-            list-style: none;
-        }
-        .mobile-menu.active { left: 0; }
-        .mobile-menu a {
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            padding: 0.7rem 1rem;
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
-        }
-        .mobile-menu a:hover {
-            background: var(--bg-card-hover);
-            color: var(--text-primary);
-        }
-
-        .menu-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--overlay-bg);
-            z-index: 150;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s;
-        }
-        .menu-overlay.active { opacity: 1; visibility: visible; }
-
-        /* ── Responsive ── */
-        @media (max-width: 768px) {
-            .desktop-nav, .navbar .btn { display: none; }
-            .menu-toggle { display: block; }
-            .navbar { padding: 0 1.2rem; }
-            body { padding-top: calc(var(--nav-height) + 0.5rem); }
-        }
-
-        /* ── Sections & Cards ── */
-        section { padding: 4rem 0; max-width: 1200px; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
-        .section-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent-light); margin-bottom: 0.8rem; display: block; }
-        .section-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.8rem; }
-        @media (min-width: 768px) { .section-title { font-size: 2.8rem; } }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 1.8rem;
-            transition: var(--transition);
-            margin-bottom: 1.5rem;
-        }
-        .card:hover { background: var(--bg-card-hover); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-
-        .grid2 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-        @media (min-width: 640px) { .grid2 { grid-template-columns: repeat(2, 1fr); } }
-        .grid3 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-        @media (min-width: 640px) { .grid3 { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 1024px) { .grid3 { grid-template-columns: repeat(3, 1fr); } }
-
-        .hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2rem; }
-        @media (min-width: 800px) { .hero { flex-direction: row; text-align: left; } .hero-content { flex: 1; } }
-
-        .hero-badge {
-            background: rgba(37,99,235,0.08);
-            border: 1px solid rgba(37,99,235,0.2);
-            color: var(--accent-light);
-            padding: 0.4rem 1.2rem;
-            border-radius: var(--radius-xl);
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 1.2rem;
-        }
-        .hero-content h1 { font-size: 2.6rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
-        @media (min-width: 640px) { .hero-content h1 { font-size: 3.2rem; } }
-        .hero-highlight { color: var(--accent-light); }
-        .hero-desc { color: var(--text-secondary); max-width: 520px; margin-bottom: 1.5rem; }
-        .hero-image img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 4px var(--bg-primary), 0 0 0 6px rgba(37,99,235,0.2); }
-        @media (min-width: 640px) { .hero-image img { width: 220px; height: 220px; } }
-
-        .skill-tag {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 0.4rem 1.2rem;
-            border-radius: var(--radius-xl);
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            white-space: nowrap;
-        }
-
-        .contact-banner {
-            background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
-            border: 1px solid rgba(37,99,235,0.2);
-            border-radius: var(--radius-xl);
-            padding: 3rem 2rem;
-            text-align: center;
-            color: var(--text-primary);
-        }
-        [data-theme="dark"] .contact-banner {
-            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #1a1040 100%);
-            border-color: rgba(99,102,241,0.2);
-            color: white;
-        }
-
-        footer { text-align: center; padding: 3rem 1.5rem; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border); margin-top: 2rem; }
-        footer a { color: var(--accent-light); text-decoration: none; }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+    <title>Simeon Ogho · Full Stack Developer</title>
+    <meta name="description" content="Simeon Ogho — Full Stack Developer building fast, reliable web apps & systems." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<header class="navbar">
-    <div class="logo">Simeon Ogho</div>
-    <nav class="desktop-nav">
+    <nav class="navbar">
+        <div class="logo">Simeon Ogho</div>
+        <div class="desktop-nav">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="navbar-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+            <a href="#contact" class="btn btn-outline">Let's Talk</a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
         <a href="#home">Home</a>
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
-    </nav>
-    <div class="navbar-actions">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-            <i class="fas fa-moon" id="themeIcon"></i>
-        </button>
-        <a href="#contact" class="btn btn-outline" style="font-size:0.85rem; padding:0.45rem 1.3rem;">Let's talk</a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-            <i class="fas fa-bars"></i>
-        </button>
     </div>
-</header>
+    <div class="menu-overlay" id="menuOverlay"></div>
 
-<ul class="mobile-menu" id="mobileMenu">
-    <li><a href="#home">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact">Contact</a></li>
-</ul>
-<div class="menu-overlay" id="menuOverlay"></div>
-
-<main>
-    <section id="home">
-        <div class="hero">
-            <div class="hero-image"><img src="https://i.imgur.com/JV8wYCd.jpeg" alt="Simeon Ogho"></div>
-            <div class="hero-content">
-                <span class="hero-badge"><i class="fas fa-globe"></i> Remote · Worldwide</span>
-                <h1>Full Stack Developer<br><span class="hero-highlight">who builds systems, fast.</span></h1>
-                <p class="hero-desc">I transform ideas into production‑ready platforms. Self‑taught, systems‑minded, and obsessive about quality. I deliver scalable web apps in record time.</p>
-                <div style="display:flex; flex-wrap:wrap; gap:0.8rem; justify-content:center;">
-                    <a href="#projects" class="btn"><i class="fas fa-rocket"></i> View my work</a>
-                    <a href="mailto:simeonogho86@gmail.com" class="btn btn-outline"><i class="fas fa-handshake"></i> Hire me</a>
+    <main>
+        <!-- Hero -->
+        <section id="home" class="hero-section">
+            <div class="hero-grid">
+                <div class="hero-image">
+                    <img src="simeon-profile.jpeg" alt="Simeon Ogho" />
+                </div>
+                <div class="hero-content">
+                    <span class="hero-badge"><i class="fas fa-globe"></i> Remote · Worldwide</span>
+                    <h1>
+                        Full Stack Developer<br />
+                        <span class="hero-highlight">who builds systems, fast.</span>
+                    </h1>
+                    <p class="hero-desc">
+                        I transform ideas into production‑ready platforms. Self‑taught, systems‑minded, and obsessive about quality. I deliver scalable web apps in record time.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#projects" class="btn"><i class="fas fa-rocket"></i> View my work</a>
+                        <a href="mailto:simeonogho86@gmail.com" class="btn btn-outline"><i class="fas fa-handshake"></i> Hire me</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="about">
-        <span class="section-label">About me</span>
-        <h2 class="section-title">Architect & Builder</h2>
-        <p style="font-size:1.05rem; max-width:700px; color:var(--text-secondary);">
-            I think in systems. Self‑taught full‑stack developer with intensive hands‑on experience, including solo development of a complete multi‑tenant school management platform. I build fast, reliable web apps using React, Supabase, and PostgreSQL.
-        </p>
-    </section>
-
-    <section id="skills">
-        <span class="section-label">What I work with</span>
-        <h2 class="section-title">Tech & Strengths</h2>
-        <div style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:2.5rem;">
-            <span class="skill-tag">React</span><span class="skill-tag">Supabase</span><span class="skill-tag">PostgreSQL</span>
-            <span class="skill-tag">JavaScript</span><span class="skill-tag">PL/pgSQL</span><span class="skill-tag">Vercel Deployment</span>
-        </div>
-        <div class="grid3">
-            <div class="card"><i class="fas fa-cogs" style="color:var(--accent-light); font-size:2rem; margin-bottom:0.5rem; display:block;"></i><h3>Systems Thinking</h3><p style="color:var(--text-muted);">Multi‑tenant, end‑to‑end platforms.</p></div>
-            <div class="card"><i class="fas fa-tachometer-alt" style="color:var(--accent-light); font-size:2rem; margin-bottom:0.5rem; display:block;"></i><h3>Shipping Speed</h3><p style="color:var(--text-muted);">CRM in 1 day. Full school OS in 2 months.</p></div>
-            <div class="card"><i class="fas fa-handshake" style="color:var(--accent-light); font-size:2rem; margin-bottom:0.5rem; display:block;"></i><h3>Client‑Centric</h3><p style="color:var(--text-muted);">Clear scope, fast delivery, real results.</p></div>
-        </div>
-    </section>
-
-    <section id="projects">
-        <span class="section-label">Featured project</span>
-        <h2 class="section-title">School Management OS</h2>
-        <div class="card">
-            <div style="display:inline-block;" class="skill-tag">Solo developer · Built in ~2 months</div>
-            <h3 style="font-size:1.8rem; margin:0.8rem 0;">Complete multi‑tenant school platform</h3>
-            <p style="color:var(--text-secondary);">
-                Production‑ready system with four portals (Admin, Teacher, Student, Parent). Features include real‑time results, PDF report cards, finance, library, CBT exams, attendance, timetabling, and automated notifications — all built by one developer.
+        <!-- About -->
+        <section id="about" class="reveal">
+            <span class="section-label">About me</span>
+            <h2 class="section-title">Architect & Builder</h2>
+            <p class="about-text">
+                I think in systems. Self‑taught full‑stack developer with intensive hands‑on experience, including solo development of a complete multi‑tenant school management platform. I build fast, reliable web apps using React, Supabase, and PostgreSQL.
             </p>
-            <ul style="list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin:1.5rem 0;">
-                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Teacher score entry with auto‑calculation</li>
-                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Real‑time result publishing & rankings</li>
-                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> PDF generation & browser print</li>
-                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Finance & library modules</li>
-                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Full CBT exam engine</li>
-                <li><i class="fas fa-check-circle" style="color:var(--green);"></i> Automated birthday notifications</li>
-            </ul>
-            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-                <a href="https://acadryx-site.vercel.app" target="_blank" class="btn"><i class="fas fa-globe"></i> Marketing site</a>
-                <a href="#contact" class="btn btn-outline"><i class="fas fa-lock"></i> Request private demo</a>
-            </div>
-        </div>
+        </section>
 
-        <h2 class="section-title" style="font-size:1.8rem; margin-top:1rem;">More Projects</h2>
-        <div class="grid3">
-            <div class="card"><i class="fab fa-whatsapp" style="color:var(--accent-light); font-size:1.5rem;"></i><h3>WhatsApp Business Sites</h3><p style="color:var(--text-muted);">Order receiving + customer tracking via membership cards.</p></div>
-            <div class="card"><i class="fas fa-chart-simple" style="color:var(--accent-light); font-size:1.5rem;"></i><h3>Sales CRM (1 Day)</h3><p style="color:var(--text-muted);">Fully functional lead tracking with notes & follow‑ups.</p></div>
-            <div class="card"><i class="fas fa-chart-pie" style="color:var(--accent-light); font-size:1.5rem;"></i><h3>Dashboards & Tools</h3><p style="color:var(--text-muted);">Internal admin panels, analytics, custom business tools.</p></div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <div class="contact-banner">
-            <h2 style="font-size:2rem;">Let's build something remarkable</h2>
-            <p style="opacity:0.8; margin-bottom:1.5rem;">Remote worldwide · Quick turnaround · Systems that scale</p>
-            <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-                <a href="mailto:simeonogho86@gmail.com?subject=Project%20Inquiry" class="btn" style="background:white; color:#0f172a; font-weight:600;"><i class="fas fa-envelope"></i> simeonogho86@gmail.com</a>
+        <!-- Skills -->
+        <section id="skills" class="reveal">
+            <span class="section-label">What I work with</span>
+            <h2 class="section-title">Tech & Strengths</h2>
+            <div class="skill-cloud">
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Supabase</span>
+                <span class="skill-tag">PostgreSQL</span>
+                <span class="skill-tag">Vanilla JS</span>
+                <span class="skill-tag">PL/pgSQL</span>
+                <span class="skill-tag">Tailwind CSS</span>
+                <span class="skill-tag">Vercel</span>
+                <span class="skill-tag">Web Audio API</span>
+                <span class="skill-tag">Canvas API</span>
             </div>
-            <p style="opacity:0.6; font-size:0.85rem; margin-top:1rem;"><i class="fas fa-clock"></i> Fast replies · Available for freelance, contract, full‑time</p>
-        </div>
-    </section>
+            <div class="skills-grid">
+                <div class="skill-card"><i class="fas fa-cogs"></i><h3>Systems Thinking</h3><p>Multi‑tenant, end‑to‑end platforms.</p></div>
+                <div class="skill-card"><i class="fas fa-tachometer-alt"></i><h3>Shipping Speed</h3><p>CRM in 1 day. Full school OS in 2 months.</p></div>
+                <div class="skill-card"><i class="fas fa-handshake"></i><h3>Client‑Centric</h3><p>Clear scope, fast delivery, real results.</p></div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects" class="reveal">
+            <span class="section-label">Featured work</span>
+            <h2 class="section-title">Projects I've built</h2>
+
+            <!-- School OS -->
+            <div class="project-card" data-accent="#2563eb">
+                <div class="project-badge">Solo developer · 2 months</div>
+                <h3>School Management OS</h3>
+                <p>Production‑ready multi‑tenant system with four portals (Admin, Teacher, Student, Parent). Real‑time results, PDF report cards, finance, library, CBT exams, attendance, timetabling, and automated notifications.</p>
+                <ul class="project-features">
+                    <li><i class="fas fa-check-circle"></i> Teacher score entry & auto‑calculation</li>
+                    <li><i class="fas fa-check-circle"></i> Real‑time result publishing & rankings</li>
+                    <li><i class="fas fa-check-circle"></i> PDF generation & browser print</li>
+                    <li><i class="fas fa-check-circle"></i> Finance & library modules</li>
+                    <li><i class="fas fa-check-circle"></i> Full CBT exam engine</li>
+                    <li><i class="fas fa-check-circle"></i> Automated birthday notifications</li>
+                </ul>
+                <div class="project-actions">
+                    <a href="https://acadryx-site.vercel.app" target="_blank" class="btn"><i class="fas fa-globe"></i> Marketing site</a>
+                    <a href="#contact" class="btn btn-outline"><i class="fas fa-lock"></i> Request private demo</a>
+                </div>
+            </div>
+
+            <!-- Eclat Royal Hotel -->
+            <div class="project-card" data-accent="#d4af37">
+                <div class="project-badge">Complete Website · 2 days</div>
+                <h3>Eclat Royal Hotel Website</h3>
+                <p>Modern, mobile‑first booking website for a hotel in Ughelli. Built with React, TypeScript, and Tailwind. Features direct WhatsApp booking, a dynamic room gallery, and a luxury dark theme.</p>
+                <div class="project-tech">
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">TypeScript</span>
+                    <span class="skill-tag">Tailwind</span>
+                    <span class="skill-tag">shadcn/ui</span>
+                    <span class="skill-tag">Vercel</span>
+                </div>
+                <ul class="project-features">
+                    <li><i class="fas fa-check-circle"></i> Direct WhatsApp booking flow</li>
+                    <li><i class="fas fa-check-circle"></i> Room gallery with lightbox</li>
+                    <li><i class="fas fa-check-circle"></i> Fully responsive & mobile‑first</li>
+                    <li><i class="fas fa-check-circle"></i> Deployed on Vercel in 2 days</li>
+                </ul>
+                <div class="project-actions">
+                    <a href="https://eclat-royal-hotel.vercel.app" target="_blank" class="btn"><i class="fas fa-globe"></i> Live Demo</a>
+                    <a href="https://github.com/acadryx-coder/eclat-royal-hotel" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> View code</a>
+                </div>
+            </div>
+
+            <!-- Rock Paper Scissors -->
+            <div class="project-card" data-accent="#8b5cf6">
+                <div class="project-badge">Vanilla JS · No frameworks</div>
+                <h3>Rock Paper Scissors · World Class</h3>
+                <p>Interactive, premium RPS game with power‑ups, multiple modes, persistent stats, and real‑time feedback. Built from scratch without libraries.</p>
+                <div class="project-tech">
+                    <span class="skill-tag">Vanilla JS</span>
+                    <span class="skill-tag">CSS Custom Properties</span>
+                    <span class="skill-tag">Canvas API</span>
+                    <span class="skill-tag">Web Audio API</span>
+                    <span class="skill-tag">LocalStorage</span>
+                </div>
+                <ul class="project-features">
+                    <li><i class="fas fa-check-circle"></i> 3 modes: Best of, Endless, Timed</li>
+                    <li><i class="fas fa-check-circle"></i> Power‑ups: Mirror, Shield, Double Points</li>
+                    <li><i class="fas fa-check-circle"></i> Persistent win/loss stats & streaks</li>
+                    <li><i class="fas fa-check-circle"></i> Dark/Light theme & confetti on win</li>
+                </ul>
+                <div class="project-actions">
+                    <a href="https://simeon-dev1.github.io/rock-paper-scissors-game/" target="_blank" class="btn"><i class="fas fa-gamepad"></i> Play now</a>
+                    <a href="https://github.com/simeon-dev1/rock-paper-scissors-game" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> View code</a>
+                </div>
+            </div>
+
+            <!-- Other projects -->
+             <h1>Others</h1>
+            <div class="project-mini-grid">
+                <div class="project-mini" data-accent="#14b8a6"><i class="fab fa-whatsapp"></i><h4>WhatsApp Business Sites</h4><p>Order receiving + customer tracking via membership cards.</p></div>
+                <div class="project-mini" data-accent="#f59e0b"><i class="fas fa-chart-simple"></i><h4>Sales CRM (1 Day)</h4><p>Fully functional lead tracking with notes & follow‑ups.</p></div>
+                <div class="project-mini" data-accent="#ef4444"><i class="fas fa-chart-pie"></i><h4>Dashboards & Tools</h4><p>Internal admin panels, analytics, custom business tools.</p></div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="reveal">
+            <div class="contact-banner">
+                <h2>Let's build something remarkable</h2>
+                <p>Remote worldwide · Quick turnaround · Systems that scale.</p>
+                <div class="contact-actions">
+                    <a href="mailto:simeonogho86@gmail.com" class="btn" style="background:white; color:#0f172a; font-weight:600;"><i class="fas fa-envelope"></i> simeonogho86@gmail.com</a>
+                </div>
+                <p class="contact-note"><i class="fas fa-clock"></i> Fast replies · Available for freelance, contract, full‑time</p>
+            </div>
+        </section>
+    </main>
 
     <footer>
         <p>© 2025 Simeon Ogho — Full Stack Developer. Built with precision.</p>
-        <p style="margin-top:0.3rem;"><a href="mailto:simeonogho86@gmail.com">simeonogho86@gmail.com</a></p>
+        <p><a href="mailto:simeonogho86@gmail.com">simeonogho86@gmail.com</a></p>
     </footer>
-</main>
 
-<script>
-    const html = document.documentElement;
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        html.setAttribute('data-theme', 'dark');
-        themeIcon.classList.replace('fa-moon', 'fa-sun');
-    }
-    themeToggle.addEventListener('click', () => {
-        const isDark = html.getAttribute('data-theme') === 'dark';
-        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
-        themeIcon.classList.toggle('fa-moon', !isDark);
-        themeIcon.classList.toggle('fa-sun', isDark);
-    });
-
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const overlay = document.getElementById('menuOverlay');
-    const menuIcon = menuToggle.querySelector('i');
-
-    function openMenu() {
-        mobileMenu.classList.add('active');
-        overlay.classList.add('active');
-        menuIcon.classList.replace('fa-bars', 'fa-times');
-    }
-    function closeMenu() {
-        mobileMenu.classList.remove('active');
-        overlay.classList.remove('active');
-        menuIcon.classList.replace('fa-times', 'fa-bars');
-    }
-    menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        mobileMenu.classList.contains('active') ? closeMenu() : openMenu();
-    });
-    overlay.addEventListener('click', closeMenu);
-    mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#' || targetId === '') return;
-            const target = document.querySelector(targetId);
-            if (target) {
-                e.preventDefault();
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-    });
-</script>
+    <script src="app.js"></script>
 </body>
 </html>
